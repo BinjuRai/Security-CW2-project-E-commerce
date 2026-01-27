@@ -52,6 +52,95 @@ exports.createProduct = async (req, res) => {
 };
 
 
+
+exports.createProduct = async (req, res) => {
+    const { name, price, description, categoryId, bagType, stock, isFeatured } = req.body;
+    
+    // ✅ Store only filename
+    const imagepath = req.file ? req.file.filename : null;
+
+    if (!name || !price || !categoryId) {
+        return res.status(400).json({
+            success: false,
+            message: "Missing required fields (name, price, categoryId)",
+        });
+    }
+
+    try {
+        const product = new Product({
+            name,
+            price,
+            description,
+            categoryId,
+            bagType,
+            stock: stock || 0,
+            isFeatured: isFeatured === 'true' || isFeatured === true,
+            imagepath,  // ✅ Use imagepath, not productImage
+        });
+
+        await product.save();
+
+        return res.status(201).json({
+            success: true,
+            data: product,
+            message: "Product created successfully",
+        });
+    } catch (err) {
+        console.error("Create product error:", err);
+        return res.status(500).json({
+            success: false,
+            message: "Server error",
+            error: err.message
+        });
+    }
+};
+
+exports.updateProduct = async (req, res) => {
+    const productId = req.params.id;
+    const { name, price, description, categoryId, bagType, stock, isFeatured } = req.body;
+
+    try {
+        const product = await Product.findById(productId);
+        if (!product) {
+            return res.status(404).json({ 
+                success: false, 
+                message: "Product not found" 
+            });
+        }
+
+        // Update fields
+        product.name = name || product.name;
+        product.price = price || product.price;
+        product.description = description || product.description;
+        product.categoryId = categoryId || product.categoryId;
+        product.bagType = bagType || product.bagType;
+        product.stock = stock !== undefined ? stock : product.stock;
+        product.isFeatured = isFeatured !== undefined 
+            ? (isFeatured === 'true' || isFeatured === true) 
+            : product.isFeatured;
+
+        // ✅ Store only filename if new image uploaded
+        if (req.file) {
+            product.imagepath = req.file.filename;  // ✅ Use imagepath
+        }
+
+        await product.save();
+
+        return res.status(200).json({
+            success: true,
+            message: "Product updated successfully",
+            data: product,
+        });
+    } catch (err) {
+        console.error("Update product error:", err);
+        return res.status(500).json({
+            success: false,
+            message: "Server error",
+            error: err.message
+        });
+    }
+};
+
 exports.getProducts = async (req, res) => {
   try {
     const { page = 1, limit = 10, search = "" } =

@@ -1,9 +1,74 @@
-// 🔒 CSRF PROTECTION MIDDLEWARE (FIXED FOR SOCKET.IO)
-// Location: backend/middlewares/csrf.js
+// // 🔒 CSRF PROTECTION MIDDLEWARE (FIXED FOR SOCKET.IO)
+// // Location: backend/middlewares/csrf.js
+
+// const csrf = require('csurf');
+
+// // 🔒 CSRF Protection Middleware with Socket.IO exemption
+// const csrfProtection = csrf({
+//     cookie: {
+//         httpOnly: true,
+//         secure: process.env.NODE_ENV === 'production',
+//         sameSite: 'strict',
+//         path: '/'
+//     },
+//     // ✅ CRITICAL FIX: Ignore CSRF for Socket.IO upgrade requests
+//     ignoreMethods: ['GET', 'HEAD', 'OPTIONS']
+// });
+
+// // ✅ Conditional CSRF protection that excludes Socket.IO
+// const conditionalCsrfProtection = (req, res, next) => {
+//     // Skip CSRF for Socket.IO connections
+//     if (req.path === '/socket.io/' || req.path.startsWith('/socket.io/')) {
+//         console.log('⚡ Skipping CSRF for Socket.IO connection');
+//         return next();
+//     }
+
+//     // Skip CSRF for WebSocket upgrade requests
+//     if (req.headers.upgrade === 'websocket') {
+//         console.log('⚡ Skipping CSRF for WebSocket upgrade');
+//         return next();
+//     }
+
+//     // Apply CSRF protection for all other routes
+//     csrfProtection(req, res, next);
+// };
+
+// // Middleware to attach CSRF token to response
+// const attachCsrfToken = (req, res, next) => {
+//     // Skip for Socket.IO
+//     if (req.path === '/socket.io/' || req.path.startsWith('/socket.io/')) {
+//         return next();
+//     }
+
+//     // Skip if csrfToken function doesn't exist (Socket.IO case)
+//     if (!req.csrfToken) {
+//         return next();
+//     }
+
+//     try {
+//         res.cookie('XSRF-TOKEN', req.csrfToken(), {
+//             httpOnly: false, // Frontend needs to read this
+//             secure: process.env.NODE_ENV === 'production',
+//             sameSite: 'strict',
+//             path: '/'
+//         });
+//     } catch (err) {
+//         // If CSRF token generation fails, just continue
+//         console.warn('⚠️ CSRF token generation skipped:', err.message);
+//     }
+
+//     next();
+// };
+
+// module.exports = { 
+//     csrfProtection: conditionalCsrfProtection, 
+//     attachCsrfToken 
+// };
+
+// backend/middlewares/csrf.js
 
 const csrf = require('csurf');
 
-// 🔒 CSRF Protection Middleware with Socket.IO exemption
 const csrfProtection = csrf({
     cookie: {
         httpOnly: true,
@@ -11,49 +76,63 @@ const csrfProtection = csrf({
         sameSite: 'strict',
         path: '/'
     },
-    // ✅ CRITICAL FIX: Ignore CSRF for Socket.IO upgrade requests
     ignoreMethods: ['GET', 'HEAD', 'OPTIONS']
 });
 
-// ✅ Conditional CSRF protection that excludes Socket.IO
 const conditionalCsrfProtection = (req, res, next) => {
-    // Skip CSRF for Socket.IO connections
-    if (req.path === '/socket.io/' || req.path.startsWith('/socket.io/')) {
-        console.log('⚡ Skipping CSRF for Socket.IO connection');
+    // ✅ Skip CSRF for these paths
+    const skipPaths = [
+        '/socket.io/',
+        '/uploads',
+        '/api/auth/me',
+        '/api/auth/login',
+        '/api/auth/register',
+        '/debug'
+    ];
+
+    // Check if path should skip CSRF
+    const shouldSkip = skipPaths.some(path => req.path.startsWith(path));
+
+    // Skip for Socket.IO
+    if (shouldSkip) {
+        console.log('⚡ Skipping CSRF for:', req.path);
         return next();
     }
 
-    // Skip CSRF for WebSocket upgrade requests
+    // Skip for WebSocket upgrade
     if (req.headers.upgrade === 'websocket') {
         console.log('⚡ Skipping CSRF for WebSocket upgrade');
         return next();
     }
 
-    // Apply CSRF protection for all other routes
-    csrfProtection(req, res, next);
-};
-
-// Middleware to attach CSRF token to response
-const attachCsrfToken = (req, res, next) => {
-    // Skip for Socket.IO
-    if (req.path === '/socket.io/' || req.path.startsWith('/socket.io/')) {
+    // Skip CSRF for GET requests (images, etc.)
+    if (req.method === 'GET') {
         return next();
     }
 
-    // Skip if csrfToken function doesn't exist (Socket.IO case)
+    // Apply CSRF protection
+    csrfProtection(req, res, next);
+};
+
+const attachCsrfToken = (req, res, next) => {
+    // Skip for paths that don't need CSRF
+    const skipPaths = ['/socket.io/', '/uploads', '/debug'];
+    if (skipPaths.some(path => req.path.startsWith(path))) {
+        return next();
+    }
+
     if (!req.csrfToken) {
         return next();
     }
 
     try {
         res.cookie('XSRF-TOKEN', req.csrfToken(), {
-            httpOnly: false, // Frontend needs to read this
+            httpOnly: false,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'strict',
             path: '/'
         });
     } catch (err) {
-        // If CSRF token generation fails, just continue
         console.warn('⚠️ CSRF token generation skipped:', err.message);
     }
 

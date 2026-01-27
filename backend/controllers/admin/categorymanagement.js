@@ -16,6 +16,75 @@ exports.createCategory = async (req, res) => {
         return res.status(500).json({ success: false, message: "Server Error" });
     }
 };
+// backend/controllers/admin/categorymanagement.js
+
+// exports.createCategory = async (req, res) => {
+//     try {
+//         // ✅ Store only filename
+//         const imagepath = req.file?.filename;
+
+//         const category = new Category({ 
+//             name: req.body.name, 
+//             description: req.body.description,
+//             imagepath  // ✅ Use imagepath
+//         });
+        
+//         await category.save();
+        
+//         return res.status(201).json({
+//             success: true,
+//             message: "Category created successfully",
+//             data: category
+//         });
+//     } catch (err) {
+//         console.error("Create category error:", err);
+//         return res.status(500).json({ 
+//             success: false, 
+//             message: "Server error",
+//             error: err.message
+//         });
+//     }
+// };
+
+exports.updateCategory = async (req, res) => {
+    try {
+        const updateData = { 
+            name: req.body.name,
+            description: req.body.description
+        };
+        
+        // ✅ Store only filename if new image uploaded
+        if (req.file) {
+            updateData.imagepath = req.file.filename;
+        }
+
+        const category = await Category.findByIdAndUpdate(
+            req.params.id,
+            updateData,
+            { new: true, runValidators: true }
+        );
+
+        if (!category) {
+            return res.status(404).json({ 
+                success: false, 
+                message: 'Category not found' 
+            });
+        }
+
+        return res.json({ 
+            success: true, 
+            data: category, 
+            message: "Category updated successfully" 
+        });
+    } catch (err) {
+        console.error("Update category error:", err);
+        return res.status(500).json({ 
+            success: false, 
+            message: "Server error",
+            error: err.message
+        });
+    }
+};
 
 exports.getAllCategories = async (req, res) => {
     try {

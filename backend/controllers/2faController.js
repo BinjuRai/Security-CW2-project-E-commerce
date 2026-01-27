@@ -31,8 +31,8 @@ exports.setup2FA = async (req, res) => {
         }
 
         const secret = speakeasy.generateSecret({
-            name: `RevModz (${user.email})`,
-            issuer: 'RevModz'
+            name: `BagBelle (${user.email})`,
+            issuer: 'BagBelle'
         });
 
         console.log('==================================================');
