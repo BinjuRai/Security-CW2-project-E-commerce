@@ -143,9 +143,36 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use(hpp({
+  whitelist: []
+}));
 // 7. 🔒 CSRF PROTECTION (FIXED - Now excludes Socket.IO)
-app.use(csrfProtection);
-app.use(attachCsrfToken);
+// app.use(csrfProtection);
+// app.use(attachCsrfToken);
+// 7. 🔒 CSRF PROTECTION - EXCLUDE AUTH ROUTES
+const publicRoutes = [
+    '/api/auth/login',
+    '/api/auth/register',
+    '/api/auth/request-reset',
+    '/api/auth/reset-password', '/api/admin/banner',
+];
+
+app.use((req, res, next) => {
+    // Skip CSRF for public auth routes
+    if (publicRoutes.some(route => req.path.startsWith(route))) {
+        return next();
+    }
+    csrfProtection(req, res, next);
+});
+
+app.use((req, res, next) => {
+    // Only attach CSRF token to non-public routes
+    if (!publicRoutes.some(route => req.path.startsWith(route))) {
+        attachCsrfToken(req, res, next);
+    } else {
+        next();
+    }
+});
 
 // 8. Debug Middleware
 app.use((req, res, next) => {
@@ -212,5 +239,6 @@ app.use("/api/user/category", userCategoryRoutes);
 app.use("/api/user/product", userProductRoutes);
 app.use("/api/admin/dashboard", adminDashboardRoutes);
 app.use("/api/esewa", esewaRoutes);
+
 
 module.exports = { app, server };

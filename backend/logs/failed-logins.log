@@ -52,3 +52,8 @@
 [2026-01-26T16:07:14.933Z] FAILED LOGIN | Email: admin@gmail.com | IP: 127.0.0.1 | Reason: Wrong password (1/5)
 [2026-01-26T16:43:10.898Z] FAILED LOGIN | Email: admin@gmail.com | IP: 127.0.0.1 | Reason: Wrong password (1/5)
 [2026-01-26T16:43:15.486Z] FAILED LOGIN | Email: admin@gmail.com | IP: 127.0.0.1 | Reason: Wrong password (2/5)
+[2026-01-27T10:04:48.819Z] FAILED LOGIN | Email: ruby@gmail.com | IP: 127.0.0.1 | Reason: Wrong password (1/5)
+[2026-01-27T10:04:51.297Z] FAILED LOGIN | Email: ruby@gmail.com | IP: 127.0.0.1 | Reason: Wrong password (2/5)
+[2026-01-27T10:04:55.933Z] FAILED LOGIN | Email: ruby@gmail.com | IP: 127.0.0.1 | Reason: Wrong password (3/5)
+[2026-01-27T11:04:06.952Z] FAILED LOGIN | Email: ruby123@gmail.com | IP: 127.0.0.1 | Reason: User not found
+[2026-01-27T11:04:19.300Z] FAILED LOGIN | Email: ruby123@gmail.com | IP: 127.0.0.1 | Reason: User not found
