@@ -8,7 +8,7 @@ export const useRegisterUser = () => {
 
     const register = async (formData) => {
         setIsLoading(true);
-        setError(null); // Clear previous errors
+        setError(null); 
 
         try {
             const response = await registerUserService(formData);

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { fetchUserNotifications, markNotificationRead } from "../services/notificationService";
 import { io } from "socket.io-client";
 
-const socket = io("http://localhost:5050"); // replace with your backend URL
+const socket = io("http://localhost:5050"); 
 
 export function useNotifications(userId) {
   const [notifications, setNotifications] = useState([]);
@@ -10,7 +10,6 @@ export function useNotifications(userId) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Fetch existing notifications
   useEffect(() => {
     if (!userId) return;
 

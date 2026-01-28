@@ -4,7 +4,7 @@ import { createOrderService, getAllOrdersService, getOrdersByUserService , updat
 } from "../services/orderService";
 import { toast } from "react-toastify";
 
-// Hook to create an order
+
 export const useCreateOrder = (onSuccess) => {
   return useMutation({
     mutationFn: createOrderService,
@@ -18,7 +18,7 @@ export const useCreateOrder = (onSuccess) => {
   });
 };
 
-// Hook to fetch all orders
+
 export const useFetchAllOrders = () => {
   return useQuery({
     queryKey: ["orders"],
