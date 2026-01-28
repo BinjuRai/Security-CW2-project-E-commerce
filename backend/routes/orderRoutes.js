@@ -1,6 +1,36 @@
+// const express = require("express");
+// const router = express.Router();
+// const orderController = require("../controllers/orderController");
+
+// // ==========================================
+// // SPECIFIC ROUTES FIRST (to avoid conflicts)
+// // ==========================================
+
+// // POST /orders - Create new order
+// router.post("/", orderController.placeOrder);
+
+// // GET /orders/all - Get all orders
+// router.get("/all", orderController.getAllOrders);
+
+// // GET /orders/user/:userId - Get orders by user ID
+// router.get("/user/:userId", orderController.getOrdersByUser);
+
+// // PUT /orders/:id/status - Update order status
+// router.put("/:id/status", orderController.updateOrderStatus);
+
+// // PUT /orders/:id/payment - Update payment status
+// router.put("/:id/payment", orderController.updatePaymentStatus);
+
+// // DELETE /orders/:id - Delete order
+// router.delete("/:id", orderController.deleteOrder);
+
+// module.exports = router;
+
 const express = require("express");
 const router = express.Router();
 const orderController = require("../controllers/orderController");
+const { authenticateUser } = require("../middlewares/authorizedUsers"); // ADD
+const authorize = require("../middlewares/authorize"); // ADD
 
 // ==========================================
 // SPECIFIC ROUTES FIRST (to avoid conflicts)
@@ -13,15 +43,15 @@ router.post("/", orderController.placeOrder);
 router.get("/all", orderController.getAllOrders);
 
 // GET /orders/user/:userId - Get orders by user ID
-router.get("/user/:userId", orderController.getOrdersByUser);
+router.get("/user/:userId", authenticateUser, orderController.getOrdersByUser);
 
 // PUT /orders/:id/status - Update order status
-router.put("/:id/status", orderController.updateOrderStatus);
+router.put("/:id/status", authenticateUser, authorize('admin'), orderController.updateOrderStatus);
 
 // PUT /orders/:id/payment - Update payment status
-router.put("/:id/payment", orderController.updatePaymentStatus);
+router.put("/:id/payment", authenticateUser, authorize('admin'), orderController.updatePaymentStatus);
 
 // DELETE /orders/:id - Delete order
-router.delete("/:id", orderController.deleteOrder);
+router.delete("/:id", authenticateUser, authorize('admin'), orderController.deleteOrder);
 
 module.exports = router;
