@@ -41,3 +41,6 @@ export const updateUserApi = (id, formData) =>
   axios.put(`/auth/${id}`, formData, {
     headers: { "Content-Type": "multipart/form-data" },
   }).then(res => res.data);
+
+  export const changePasswordApi = (id, data) =>
+  axios.put(`/auth/${id}/change-password`, data).then(res => res.data);
