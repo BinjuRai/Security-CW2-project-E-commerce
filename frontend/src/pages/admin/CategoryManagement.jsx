@@ -10,7 +10,7 @@ export default function CategoryManagement() {
         <div className="min-h-screen bg-[#fffcfc] text-[#494040] py-12 px-8 selection:bg-[#f1d1d1]">
             <div className="max-w-6xl mx-auto">
                 
-                {/* Breadcrumbs */}
+              
                 <div className="flex items-center gap-3 text-[10px] font-bold tracking-[0.3em] uppercase text-[#494040]/40 mb-10">
                     <span>Atelier</span>
                     <ChevronRight size={10} className="text-[#f1d1d1]" />
@@ -34,7 +34,7 @@ export default function CategoryManagement() {
                         </p>
                     </div>
 
-                    {/* Quick Action */}
+            
                     <div className="flex flex-col items-end gap-4">
                         <button 
                             onClick={() => { /* Logic to open Add Category Modal if separate */ }}
@@ -46,21 +46,18 @@ export default function CategoryManagement() {
                     </div>
                 </header>
 
-                {/* Table Section Wrapper */}
+              
                 <div className="relative group">
-                    {/* Decorative Background for the Table Area */}
+                  
                     <div className="absolute -inset-4 bg-[#f1d1d1]/5 rounded-sm -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
                     
                     <div className="bg-[#fffcfc] border border-[#f1d1d1]/30 shadow-[0_10px_40px_rgba(73,64,64,0.02)]">
-                        {/* 
-                            Note: The CategoryTable component should be updated internally
-                            to use the same editorial styling (minimalist rows, #494040 text)
-                        */}
+                        
                         <CategoryTable />
                     </div>
                 </div>
 
-                {/* Informational Footer */}
+             
                 <footer className="mt-16 flex flex-col md:flex-row justify-between items-center border-t border-[#f1d1d1]/20 pt-8 gap-4">
                     <div className="flex items-center gap-4 text-[#494040]/30 uppercase text-[9px] font-bold tracking-[0.2em]">
                         <Bookmark size={12} strokeWidth={1.5} />
@@ -72,7 +69,6 @@ export default function CategoryManagement() {
                 </footer>
             </div>
 
-            {/* Corner Decorative Element */}
             <div className="fixed bottom-10 right-10 opacity-10 pointer-events-none hidden lg:block">
                 <Layers size={120} strokeWidth={0.5} className="text-[#494040]" />
             </div>

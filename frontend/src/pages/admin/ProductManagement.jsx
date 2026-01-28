@@ -1,15 +1,4 @@
-// import React from 'react'
-// import ProductTable from '../../components/admin/ProductTable'
 
-// export default function ProductManagement() {
-
-//     return (
-//         <div>
-
-//             <ProductTable />
-//         </div>
-//     )
-// }
 import React from 'react';
 import ProductTable from '../../components/admin/ProductTable';
 import { Plus, ChevronRight, ClipboardList, Filter } from 'lucide-react';
@@ -22,7 +11,7 @@ export default function ProductManagement() {
         <div className="min-h-screen bg-[#fffcfc] text-[#494040] py-12 px-8 selection:bg-[#f1d1d1]">
             <div className="max-w-[1600px] mx-auto">
                 
-                {/* Editorial Breadcrumbs */}
+            
                 <div className="flex items-center gap-3 text-[10px] font-bold tracking-[0.3em] uppercase text-[#494040]/40 mb-10">
                     <span>Atelier</span>
                     <ChevronRight size={10} className="text-[#f1d1d1]" />
@@ -31,7 +20,7 @@ export default function ProductManagement() {
                     <span className="text-[#494040]">Product Registry</span>
                 </div>
 
-                {/* Header Section */}
+              
                 <header className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 border-b border-[#f1d1d1]/30 pb-12 mb-12">
                     <div className="space-y-3">
                         <div className="flex items-center gap-2 text-[#f1d1d1]">
@@ -46,7 +35,7 @@ export default function ProductManagement() {
                         </p>
                     </div>
 
-                    {/* Action Suite */}
+                 
                     <div className="flex flex-col sm:flex-row items-center gap-4">
                         <button 
                             className="group flex items-center gap-3 px-6 py-3 border border-[#f1d1d1] text-[#494040] rounded-full hover:bg-[#f1d1d1]/10 transition-all duration-500"
@@ -65,21 +54,18 @@ export default function ProductManagement() {
                     </div>
                 </header>
 
-                {/* Main Table Area */}
+          
                 <div className="relative group">
-                    {/* Subtle aesthetic backdrop */}
+                 
                     <div className="absolute -inset-4 bg-[#f1d1d1]/5 rounded-sm -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
                     
                     <div className="bg-[#fffcfc] border border-[#f1d1d1]/30 shadow-[0_10px_40px_rgba(73,64,64,0.02)] overflow-hidden">
-                        {/* 
-                            ProductTable should be updated internally to use 
-                            border-[#f1d1d1]/10 and font-light for a premium look
-                        */}
+                        
                         <ProductTable />
                     </div>
                 </div>
 
-                {/* Registry Footer */}
+          
                 <footer className="mt-16 flex flex-col md:flex-row justify-between items-center border-t border-[#f1d1d1]/20 pt-8 gap-4">
                     <div className="flex items-center gap-4 text-[#494040]/30 uppercase text-[9px] font-bold tracking-[0.2em]">
                         <ClipboardList size={12} strokeWidth={1.5} />
@@ -91,7 +77,7 @@ export default function ProductManagement() {
                 </footer>
             </div>
 
-            {/* Subtle Decorative Backdrop Icon */}
+        
             <div className="fixed bottom-20 left-10 opacity-[0.03] pointer-events-none hidden xl:block">
                 <ClipboardList size={300} strokeWidth={0.5} className="text-[#494040]" />
             </div>
