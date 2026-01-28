@@ -80,7 +80,6 @@ const csrfProtection = csrf({
 });
 
 const conditionalCsrfProtection = (req, res, next) => {
-    // ✅ Skip CSRF for these paths
     const skipPaths = [
         '/socket.io/',
         '/uploads',
@@ -89,33 +88,22 @@ const conditionalCsrfProtection = (req, res, next) => {
         '/api/auth/register',
         '/debug'
     ];
-
-    // Check if path should skip CSRF
     const shouldSkip = skipPaths.some(path => req.path.startsWith(path));
-
-    // Skip for Socket.IO
     if (shouldSkip) {
         console.log('⚡ Skipping CSRF for:', req.path);
         return next();
     }
-
-    // Skip for WebSocket upgrade
     if (req.headers.upgrade === 'websocket') {
         console.log('⚡ Skipping CSRF for WebSocket upgrade');
         return next();
     }
-
-    // Skip CSRF for GET requests (images, etc.)
     if (req.method === 'GET') {
         return next();
     }
-
-    // Apply CSRF protection
     csrfProtection(req, res, next);
 };
 
 const attachCsrfToken = (req, res, next) => {
-    // Skip for paths that don't need CSRF
     const skipPaths = ['/socket.io/', '/uploads', '/debug'];
     if (skipPaths.some(path => req.path.startsWith(path))) {
         return next();

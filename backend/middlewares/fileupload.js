@@ -45,6 +45,7 @@
 // };
 
 // backend/middlewares/fileupload.js
+
 const multer = require("multer");
 const { v4: uuidv4 } = require("uuid");
 const path = require("path");
@@ -53,25 +54,18 @@ const fs = require("fs");
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     let folder = "uploads/";
-
-    // Create separate folder for user profile images
     if (file.fieldname === "profileImage") {
       folder = "uploads/user/";
     }
-
-    // Ensure folder exists
     fs.mkdirSync(folder, { recursive: true });
-
     cb(null, folder);
   },
-
   filename: (req, file, cb) => {
     const ext = path.extname(file.originalname); 
     const filename = `${file.fieldname}-${uuidv4()}${ext}`;
-    cb(null, filename);  // ✅ Returns ONLY filename
+    cb(null, filename);  
   }
 });
-
 const fileFilter = (req, file, cb) => {
   if (file.mimetype.startsWith("image")) {
     cb(null, true);
@@ -79,10 +73,9 @@ const fileFilter = (req, file, cb) => {
     cb(new Error("Only image files are allowed!"), false);
   }
 };
-
 const upload = multer({
   storage,
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB max
+  limits: { fileSize: 20 * 1024 * 1024 }, 
   fileFilter
 });
 

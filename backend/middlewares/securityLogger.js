@@ -110,27 +110,17 @@ exports.getSecurityStats = async () => {
  * Call this middleware on sensitive routes
  */
 exports.detectSuspiciousActivity = (req, res, next) => {
-    const suspiciousPatterns = [
-        // SQL Injection attempts
+    const suspiciousPatterns = [ 
         /('|--|;|\/\*|\*\/|xp_|sp_)/i,
-
-        // XSS attempts
         /(<script|javascript:|onerror=|onload=)/i,
-
-        // Path traversal
         /(\.\.\/|\.\.\\)/,
-
-        // Command injection
         /(\||&|;|\$\()/
     ];
-
-    // Check all request parameters
     const checkString = JSON.stringify({
         body: req.body,
         query: req.query,
         params: req.params
     });
-
     for (const pattern of suspiciousPatterns) {
         if (pattern.test(checkString)) {
             this.logSuspiciousActivity(
@@ -149,7 +139,6 @@ exports.detectSuspiciousActivity = (req, res, next) => {
             });
         }
     }
-
     next();
 };
 

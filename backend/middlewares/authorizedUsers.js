@@ -4,7 +4,6 @@ const User = require("../models/User");
 // 🔒 ENHANCED: Cookie-based Authentication Middleware
 exports.authenticateUser = async (req, res, next) => {
     try {
-        // 🔒 STEP 1: Get token from HTTP-only cookie (NOT Authorization header)
         const token = req.cookies.token;
         console.log('🍪 ALL COOKIES:', req.cookies);
         console.log('🔍 Headers:', req.headers);
@@ -20,12 +19,9 @@ exports.authenticateUser = async (req, res, next) => {
                 message: "Not authorized. Please login."
             });
         }
-
-        // 🔒 STEP 2: Verify token
         const decoded = jwt.verify(token, process.env.SECRET);
         console.log("   ✅ Token verified, user ID:", decoded._id);
 
-        // 🔒 STEP 3: Check if user still exists
         const user = await User.findOne({ _id: decoded._id });
 
         if (!user) {
