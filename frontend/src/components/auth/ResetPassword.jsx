@@ -11,7 +11,7 @@ export default function ResetPassword() {
 
     useEffect(() => {
         if (success) {
-            // Redirect handled in handleSubmit, but just in case
+           
             const timer = setTimeout(() => {
                 setSuccess("");
             }, 5000);

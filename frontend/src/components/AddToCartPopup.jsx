@@ -1,69 +1,7 @@
-// "use client"
+"use client";
 
-// import { useEffect } from "react"
-// import { Plus, Minus, X } from "lucide-react"
-
-// export default function AddToCartPopup({
-//   product,
-//   quantity,
-//   onIncrement,
-//   onDecrement,
-//   onClose,
-//   duration = 3000 
-// }) {
-//   useEffect(() => {
-//     const timer = setTimeout(() => {
-//       onClose()
-//     }, duration)
-//     return () => clearTimeout(timer)
-//   }, [onClose, duration])
-
-//   if (!product) return null
-
-//   return (
-//     <div
-//       className="fixed bottom-6 right-6 w-80 bg-[#222740] rounded-lg shadow-xl border border-blue-700 p-5 flex items-center gap-5 z-[9999] text-white"
-//       style={{ fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif" }}
-//     >
-//       {/* Product info */}
-//       <div className="flex-1">
-//         <h4 className="font-semibold text-lg">{product.name}</h4>
-//         <div className="flex items-center gap-3 mt-3">
-//           <button
-//             onClick={onDecrement}
-//             disabled={quantity <= 1}
-//             className="p-2 rounded bg-blue-700 hover:bg-blue-600 disabled:opacity-50 transition"
-//             aria-label="Decrease quantity"
-//           >
-//             <Minus className="w-5 h-5" />
-//           </button>
-//           <span className="px-3 text-lg font-semibold">{quantity}</span>
-//           <button
-//             onClick={onIncrement}
-//             className="p-2 rounded bg-blue-700 hover:bg-blue-600 transition"
-//             aria-label="Increase quantity"
-//           >
-//             <Plus className="w-5 h-5" />
-//           </button>
-//         </div>
-//       </div>
-
-//       {/* Close button */}
-//       <button
-//         onClick={onClose}
-//         aria-label="Close popup"
-//         className="text-blue-300 hover:text-white transition"
-//       >
-//         <X className="w-6 h-6" />
-//       </button>
-//     </div>
-//   )
-// }
-
-"use client"
-
-import { useEffect } from "react"
-import { Plus, Minus, X, ShoppingBag } from "lucide-react"
+import { useEffect } from "react";
+import { Plus, Minus, X, ShoppingBag } from "lucide-react";
 
 export default function AddToCartPopup({
   product,
@@ -71,30 +9,37 @@ export default function AddToCartPopup({
   onIncrement,
   onDecrement,
   onClose,
-  duration = 4000 
+  duration = 4000,
 }) {
   useEffect(() => {
     const timer = setTimeout(() => {
-      onClose()
-    }, duration)
-    return () => clearTimeout(timer)
-  }, [onClose, duration])
+      onClose();
+    }, duration);
+    return () => clearTimeout(timer);
+  }, [onClose, duration]);
 
-  if (!product) return null
+  if (!product) return null;
 
   return (
-    <div
-      className="fixed bottom-8 right-8 w-[340px] bg-[#fffcfc] shadow-[0_15px_50px_rgba(73,64,64,0.15)] border border-[#f1d1d1]/50 p-6 z-[9999] animate-in slide-in-from-right-10 duration-500"
-    >
+    <div className="fixed bottom-8 right-8 w-[340px] bg-[#fffcfc] shadow-[0_15px_50px_rgba(73,64,64,0.15)] border border-[#f1d1d1]/50 p-6 z-[9999] animate-in slide-in-from-right-10 duration-500">
       {/* Top Accent Line (Auto-close progress bar feel) */}
-      <div className="absolute top-0 left-0 h-[2px] bg-[#f1d1d1] animate-progress-shrink" style={{ animationDuration: `${duration}ms` }}></div>
+      <div
+        className="absolute top-0 left-0 h-[2px] bg-[#f1d1d1] animate-progress-shrink"
+        style={{ animationDuration: `${duration}ms` }}
+      ></div>
 
       <div className="flex flex-col gap-4">
         {/* Header */}
         <div className="flex justify-between items-start">
           <div className="flex items-center gap-2">
-            <ShoppingBag size={14} className="text-[#f1d1d1]" strokeWidth={1.5} />
-            <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-[#494040]/40">Added to Bag</span>
+            <ShoppingBag
+              size={14}
+              className="text-[#f1d1d1]"
+              strokeWidth={1.5}
+            />
+            <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-[#494040]/40">
+              Added to Bag
+            </span>
           </div>
           <button
             onClick={onClose}
@@ -107,11 +52,11 @@ export default function AddToCartPopup({
         {/* Product Details */}
         <div className="flex gap-4">
           <div className="w-16 h-16 bg-white border border-[#f1d1d1]/20 flex-shrink-0 p-1">
-             <img 
-               src={product.productImage} 
-               alt={product.name} 
-               className="w-full h-full object-contain"
-             />
+            <img
+              src={product.productImage}
+              alt={product.name}
+              className="w-full h-full object-contain"
+            />
           </div>
           <div className="flex flex-col justify-center overflow-hidden">
             <h4 className="font-serif italic text-[#494040] truncate text-lg leading-tight">
@@ -128,7 +73,9 @@ export default function AddToCartPopup({
 
         {/* Controls */}
         <div className="flex items-center justify-between">
-          <span className="text-[10px] font-bold tracking-widest uppercase text-[#494040]/40">Adjust Quantity</span>
+          <span className="text-[10px] font-bold tracking-widest uppercase text-[#494040]/40">
+            Adjust Quantity
+          </span>
           <div className="flex items-center border border-[#f1d1d1] rounded-full px-3 py-1">
             <button
               onClick={onDecrement}
@@ -153,8 +100,12 @@ export default function AddToCartPopup({
       {/* Global CSS for progress animation if not using Tailwind config */}
       <style jsx>{`
         @keyframes progress-shrink {
-          from { width: 100%; }
-          to { width: 0%; }
+          from {
+            width: 100%;
+          }
+          to {
+            width: 0%;
+          }
         }
         .animate-progress-shrink {
           animation-name: progress-shrink;
@@ -163,5 +114,5 @@ export default function AddToCartPopup({
         }
       `}</style>
     </div>
-  )
+  );
 }

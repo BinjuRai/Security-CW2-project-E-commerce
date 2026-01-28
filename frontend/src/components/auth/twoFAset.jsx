@@ -1,12 +1,11 @@
-// 🔐 2FA SETUP COMPONENT
-// Location: frontend/src/components/auth/TwoFASetup.jsx
+
 
 import React, { useState, useEffect, useRef } from 'react';
 import axiosInstance from '../../api/api';
 import { Shield, Copy, Check, Download, AlertCircle, X } from 'lucide-react';
 
 export default function TwoFASetup({ onClose, onSuccess }) {
-    const [step, setStep] = useState(1); // 1: QR Code, 2: Verify, 3: Backup Codes
+    const [step, setStep] = useState(1); 
     const [qrCode, setQrCode] = useState('');
     const [manualKey, setManualKey] = useState('');
     const [verificationCode, setVerificationCode] = useState('');
@@ -16,10 +15,9 @@ export default function TwoFASetup({ onClose, onSuccess }) {
     const [copied, setCopied] = useState(false);
     const [downloadedBackupCodes, setDownloadedBackupCodes] = useState(false);
 
-    // ✅ Prevent duplicate calls
+
     const hasFetchedRef = useRef(false);
 
-    // Step 1: Get QR Code - ✅ FIXED: Now checks hasFetchedRef
     useEffect(() => {
         if (step === 1 && !hasFetchedRef.current) {
             hasFetchedRef.current = true;

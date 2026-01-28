@@ -8,7 +8,7 @@ const SimpleCaptcha = ({ onVerify, onFail, onClose }) => {  // ✅ Has onClose
     const [isVerified, setIsVerified] = useState(false);
     const [error, setError] = useState('');
 
-    // Generate random CAPTCHA text
+
     const generateCaptcha = () => {
         const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
         let result = '';
