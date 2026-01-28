@@ -8,8 +8,6 @@ const speakeasy = require("speakeasy");
 const Notification = require('../models/Notification');
 const io = global.io;
 
-
-// 🔒 IMPORT SECURITY LOGGER
 const {
     logFailedLogin,
     logSuccessfulLogin,
@@ -18,10 +16,8 @@ const {
     logSuspiciousActivity
 } = require("../middlewares/securityLogger");
 
-// 🔒 JWT and Cookie Configuration
 const ACCESS_TOKEN_EXPIRY = '15m';
 
-// 🔒 Helper: Generate JWT
 const generateToken = (userId, role, email) => {
     return jwt.sign(
         { _id: userId, role, email },
@@ -30,7 +26,6 @@ const generateToken = (userId, role, email) => {
     );
 };
 
-// 🔒 Helper: Set HTTP-only cookie
 const setTokenCookie = (res, token) => {
     const cookieOptions = {
         httpOnly: true,
@@ -43,7 +38,6 @@ const setTokenCookie = (res, token) => {
     res.cookie('token', token, cookieOptions);
 };
 
-// 🔒 Helper: Clear cookie (logout)
 const clearTokenCookie = (res) => {
     res.cookie('token', '', {
         httpOnly: true,
