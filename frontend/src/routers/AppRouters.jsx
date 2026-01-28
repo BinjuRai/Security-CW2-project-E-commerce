@@ -143,7 +143,7 @@ function App() {
             <Routes>
                 <Route path="/" element={<Navigate to="/login" replace />} />
 
-                {/* Guest Routes */}
+           
                 <Route element={<GuestRoute />}>
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
@@ -151,7 +151,7 @@ function App() {
                     <Route path="/request-reset" element={<RequestReset />} />
                 </Route>
 
-                {/* Normal user routes protected by NormalUserRoute */}
+      
                 <Route path='/normal/*' element={<NormalUserRoute />}>
                     <Route element={<UserMainLayout />}>
                         <Route path="dash" element={<Page />} />
@@ -164,11 +164,11 @@ function App() {
                         <Route path="notification" element={<Notifications />} />
                         <Route path="user/category/:categoryId" element={<CategoryProducts />} />
                     </Route>
-                    {/* Catch all 404 for /normal */}
+                
                     <Route path="*" element={<>404 Not Found</>} />
                 </Route>
 
-                {/* 🔒 Admin routes protected by AdminRoute */}
+        
                 <Route path="/admin/*" element={<AdminRoute />}>
                     <Route element={<AdminLayout />}>
                         <Route path="dashboard" element={<Dashboard />} />
@@ -187,7 +187,7 @@ function App() {
                     </Route>
                 </Route>
 
-                {/* 🆕 Unauthorized page */}
+    
                 <Route path="/unauthorized" element={<Unauthorized />} />
             </Routes>
         </Router>
