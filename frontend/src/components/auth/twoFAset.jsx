@@ -82,7 +82,7 @@ export default function TwoFASetup({ onClose, onSuccess }) {
 
     // Download backup codes
     const downloadBackupCodes = () => {
-        const text = `RevModz 2FA Backup Codes\nGenerated: ${new Date().toLocaleString()}\n\n${backupCodes.join('\n')}\n\nIMPORTANT: Keep these codes secure. Each code can only be used once.`;
+        const text = `BagBelle 2FA Backup Codes\nGenerated: ${new Date().toLocaleString()}\n\n${backupCodes.join('\n')}\n\nIMPORTANT: Keep these codes secure. Each code can only be used once.`;
         const blob = new Blob([text], { type: 'text/plain' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');

@@ -371,26 +371,8 @@ export default function RegisterForm() {
       {/* Logo */}
       <img src={logo} alt="Logo" className="mx-auto mb-8 w-28 opacity-90" />
 
-      {/* Avatar Upload */}
-      <div className="flex justify-center mb-6">
-        <div className="relative">
-          <div className="w-28 h-28 rounded-full bg-[#f1dcdc]/50 border border-[#544545]/20 overflow-hidden flex items-center justify-center">
-            {preview ? (
-              <img src={preview} className="w-full h-full object-cover" />
-            ) : (
-              <span className="text-sm text-[#544545]/60">
-                Upload Photo
-              </span>
-            )}
-          </div>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleFileChange}
-            className="absolute inset-0 opacity-0 cursor-pointer"
-          />
-        </div>
-      </div>
+
+   
 
       <form onSubmit={handleSubmit} className="space-y-5 text-left">
         {/* Username */}
