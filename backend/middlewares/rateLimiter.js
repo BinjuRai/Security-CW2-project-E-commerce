@@ -1,5 +1,4 @@
-// 🔒 RATE LIMITING MIDDLEWARE (Updated with 2FA Support & CAPTCHA Integration)
-// Location: backend/middlewares/rateLimiter.js
+
 
 const rateLimit = require('express-rate-limit');
 const RedisStore = require('rate-limit-redis');
@@ -26,14 +25,14 @@ exports.loginLimiter = rateLimit({
         rateLimited: true
     },
     handler: (req, res) => {
-        // Log suspicious activity
+        
         console.warn(`🚨 RATE LIMIT EXCEEDED: IP ${req.ip} attempted too many logins`);
 
         res.status(429).json({
             success: false,
             message: "Too many login attempts. Your IP has been temporarily blocked.",
             rateLimited: true,
-            retryAfter: 15 // minutes
+            retryAfter: 15 
         });
     },
     standardHeaders: true,
