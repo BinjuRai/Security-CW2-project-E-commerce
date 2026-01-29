@@ -137,9 +137,9 @@ export default function AdminLayout() {
             <div className="flex items-center gap-4">
               <div className="flex flex-col">
                 <span className="text-xl font-serif italic tracking-tight">
-                  Rev
+                  Bag
                   <span className="font-sans not-italic font-light tracking-widest uppercase text-sm ml-1">
-                    Modz
+                   Belle
                   </span>
                 </span>
                 <span className="text-[9px] tracking-[0.3em] uppercase text-[#fffcfc]/40 font-bold">

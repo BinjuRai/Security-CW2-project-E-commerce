@@ -64,7 +64,7 @@ export default function NotificationDropdown({ userId }) {
           baseMsg = "Your order is being prepared";
           break;
         case "completed":
-          baseMsg = "Your order has been delivered. Enjoy your meal!";
+          baseMsg = "Your order has been delivered. hope you will like it!";
           break;
       }
     }

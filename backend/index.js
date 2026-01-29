@@ -27,7 +27,7 @@ const esewaRoutes = require("./routes/esweaRoutes");
 
 const app = express();
 const server = http.createServer(app);
-
+const hpp = require('hpp');
 const io = new Server(server, {
   cors: {
     origin: "http://localhost:5173",
@@ -113,7 +113,7 @@ app.use(
         scriptSrc: ["'self'", "'unsafe-inline'"],
         styleSrc: ["'self'", "'unsafe-inline'"],
         imgSrc: ["'self'", "data:", "blob:"],
-        connectSrc: ["'self'", "http://localhost:5173", "ws://localhost:5050"], // ✅ Added WebSocket
+        connectSrc: ["'self'", "http://localhost:5173", "ws://localhost:5050"], 
       },
     },
     frameguard: { action: "deny" },

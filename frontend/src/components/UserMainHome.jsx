@@ -52,6 +52,7 @@ export default function UserHomePage() {
     else navigate(path);
   };
 
+
   return (
     <div className="bg-[#fffcfc] text-[#494040] min-h-screen selection:bg-[#f1d1d1]">
       <div className="max-w-7xl mx-auto px-6 lg:px-12 py-10">
@@ -79,6 +80,7 @@ export default function UserHomePage() {
         {/* Banner Slider */}
         <div className="mb-24 rounded-sm overflow-hidden border border-[#f1d1d1]/20">
           <BannerSlider />
+          
         </div>
 
         {/* Minimalist Stats / Benefits */}
@@ -153,6 +155,7 @@ export default function UserHomePage() {
             {featured.length > 0 ? (
               <Slider {...tickerSettings}>
                 {featured.map((product) => (
+                  
                   <div key={product._id} className="px-3">
                     <div
                       onClick={() =>

@@ -7,10 +7,7 @@ const qrcode = require("qrcode");
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
 
-// ==========================================
-// 🔐 SETUP 2FA (Generate QR Code)
-// ==========================================
-// In your setup2FA controller
+
 exports.setup2FA = async (req, res) => {
     try {
         const userId = req.user._id;
@@ -42,7 +39,7 @@ exports.setup2FA = async (req, res) => {
         console.log('Generated secret (base32):', secret.base32);
         console.log('Secret length:', secret.base32.length);
 
-        // ✅ CRITICAL: Clear any existing temp secret first
+    
         user.twoFactorTempSecret = secret.base32;
         await user.save();
 
@@ -76,9 +73,7 @@ exports.setup2FA = async (req, res) => {
         });
     }
 };
-// ==========================================
-// 🔐 VERIFY & ENABLE 2FA
-// ==========================================
+
 exports.verifyAndEnable2FA = async (req, res) => {
     try {
         const userId = req.user._id;
@@ -98,10 +93,7 @@ exports.verifyAndEnable2FA = async (req, res) => {
                 message: "2FA token is required"
             });
         }
-
-        // Get the TEMP secret
         const user = await User.findById(userId).select('+twoFactorTempSecret');
-
         console.log('User found:', !!user);
         console.log('User email:', user?.email);
         console.log('Has twoFactorTempSecret:', !!user?.twoFactorTempSecret);
@@ -115,8 +107,6 @@ exports.verifyAndEnable2FA = async (req, res) => {
                 message: "2FA setup not initiated. Please start setup first."
             });
         }
-
-        // Generate what the current valid token SHOULD be
         const currentValidToken = speakeasy.totp({
             secret: user.twoFactorTempSecret,
             encoding: 'base32'
@@ -126,8 +116,6 @@ exports.verifyAndEnable2FA = async (req, res) => {
         console.log('Token you entered:', token);
         console.log('Do they match?', currentValidToken === token);
         console.log('Current time:', new Date().toISOString());
-
-        // Try verification with window
         const verified = speakeasy.totp.verify({
             secret: user.twoFactorTempSecret,
             encoding: 'base32',
@@ -144,8 +132,6 @@ exports.verifyAndEnable2FA = async (req, res) => {
                 message: "Invalid 2FA code. Please try again."
             });
         }
-
-        // Generate backup codes
         const backupCodes = [];
         for (let i = 0; i < 10; i++) {
             const code = crypto.randomBytes(4).toString('hex').toUpperCase();
@@ -155,8 +141,6 @@ exports.verifyAndEnable2FA = async (req, res) => {
         const hashedBackupCodes = await Promise.all(
             backupCodes.map(code => bcrypt.hash(code, 10))
         );
-
-        // Move temp secret to permanent, clear temp
         user.twoFactorSecret = user.twoFactorTempSecret;
         user.twoFactorTempSecret = undefined;
         user.twoFactorEnabled = true;
@@ -183,9 +167,7 @@ exports.verifyAndEnable2FA = async (req, res) => {
     }
 };
 
-// ==========================================
-// 🔐 VERIFY 2FA TOKEN (During Login)
-// ==========================================
+
 exports.verify2FAToken = async (req, res) => {
     try {
         const { userId, token, isBackupCode } = req.body;
@@ -208,7 +190,6 @@ exports.verify2FAToken = async (req, res) => {
 
         let verified = false;
 
-        // Check if it's a backup code
         if (isBackupCode) {
             if (!user.twoFactorBackupCodes || user.twoFactorBackupCodes.length === 0) {
                 return res.status(400).json({
@@ -238,12 +219,12 @@ exports.verify2FAToken = async (req, res) => {
             }
 
         } else {
-            // Verify TOTP token
+           
             verified = speakeasy.totp.verify({
                 secret: user.twoFactorSecret,
                 encoding: 'base32',
                 token: token,
-                window: 2 // 60 seconds tolerance
+                window: 2 
             });
 
             if (!verified) {
@@ -254,7 +235,6 @@ exports.verify2FAToken = async (req, res) => {
             }
         }
 
-        // Reset failed login attempts on successful 2FA
         if (user.failedLoginAttempts > 0) {
             user.failedLoginAttempts = 0;
             user.accountLockedUntil = undefined;
@@ -280,9 +260,7 @@ exports.verify2FAToken = async (req, res) => {
     }
 };
 
-// ==========================================
-// 🔐 DISABLE 2FA
-// ==========================================
+
 exports.disable2FA = async (req, res) => {
     try {
         const userId = req.user._id;
@@ -358,9 +336,7 @@ exports.disable2FA = async (req, res) => {
     }
 };
 
-// ==========================================
-// 🔐 GET 2FA STATUS
-// ==========================================
+
 exports.get2FAStatus = async (req, res) => {
     try {
         const userId = req.user._id;
@@ -392,9 +368,7 @@ exports.get2FAStatus = async (req, res) => {
     }
 };
 
-// ==========================================
-// 🔐 REGENERATE BACKUP CODES
-// ==========================================
+
 exports.regenerateBackupCodes = async (req, res) => {
     try {
         const userId = req.user._id;
@@ -415,8 +389,6 @@ exports.regenerateBackupCodes = async (req, res) => {
                 message: "2FA not enabled"
             });
         }
-
-        // Verify password
         const passwordMatch = await bcrypt.compare(password, user.password);
         if (!passwordMatch) {
             return res.status(403).json({
@@ -424,8 +396,6 @@ exports.regenerateBackupCodes = async (req, res) => {
                 message: "Incorrect password"
             });
         }
-
-        // Verify 2FA token
         const verified = speakeasy.totp.verify({
             secret: user.twoFactorSecret,
             encoding: 'base32',
@@ -439,8 +409,6 @@ exports.regenerateBackupCodes = async (req, res) => {
                 message: "Invalid 2FA code"
             });
         }
-
-        // Generate new backup codes
         const backupCodes = [];
         for (let i = 0; i < 10; i++) {
             const code = crypto.randomBytes(4).toString('hex').toUpperCase();
